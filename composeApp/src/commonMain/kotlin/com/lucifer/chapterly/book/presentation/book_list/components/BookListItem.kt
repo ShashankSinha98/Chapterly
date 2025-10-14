@@ -170,7 +170,7 @@ fun BookListItemPreview() {
     )
 }
 
-private val sampleBook = Book(
+val sampleBook = Book(
     id = "1",
     title = "Sample Book Title",
     imageUrl = "https://example.com/sample.jpg",
