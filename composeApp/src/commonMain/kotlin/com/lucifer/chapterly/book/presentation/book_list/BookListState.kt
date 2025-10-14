@@ -5,7 +5,7 @@ import com.lucifer.chapterly.core.presentation.UiText
 
 data class BookListState(
     val searchQuery: String = "Kotlin",
-    val searchResults: List<Book> = emptyList(),
+    val searchResults: List<Book> = emptyList(), // also acts as all books list
     val favoriteBooks: List<Book> = emptyList(),
     val isLoading: Boolean = false,
     val selectedTabIndex: Int = 0,
