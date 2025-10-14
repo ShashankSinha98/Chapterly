@@ -17,6 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lucifer.chapterly.book.domain.Book
 import com.lucifer.chapterly.book.presentation.book_list.components.BookSearchBar
 import com.lucifer.chapterly.core.presentation.DarkBlue
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -65,4 +66,13 @@ private fun BookListScreen(
                 .padding(16.dp)
         )
     }
+}
+
+@Preview
+@Composable
+private fun BookListScreenPreview() {
+    BookListScreen(
+        state = BookListState(),
+        onAction = {}
+    )
 }

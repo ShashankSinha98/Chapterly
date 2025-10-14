@@ -1,0 +1,185 @@
+package com.lucifer.chapterly.book.presentation.book_list.components
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import chapterly.composeapp.generated.resources.Res
+import chapterly.composeapp.generated.resources.book_error_2
+import coil3.compose.rememberAsyncImagePainter
+import com.lucifer.chapterly.book.domain.Book
+import com.lucifer.chapterly.core.presentation.LightBlue
+import com.lucifer.chapterly.core.presentation.SandYellow
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.math.round
+
+@Composable
+fun BookListItem(
+    book: Book,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        shape = RoundedCornerShape(32.dp),
+        modifier = modifier
+            .clickable(onClick = onClick),
+        color = LightBlue.copy(alpha = 0.2f)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min), // Ensures the row height matches its tallest child
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            // Book Cover Image
+            Box(
+                modifier = Modifier
+                    .height(100.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                var imageLoadResult by remember {
+                    mutableStateOf<Result<Painter>?>(null) // State to hold the result of the image loading
+                }
+
+                val painter = rememberAsyncImagePainter(
+                    model = book.imageUrl, // image URL
+                    onSuccess = {
+                        // Check if image has dimensions
+                        imageLoadResult = if(it.painter.intrinsicSize.width > 1 && it.painter.intrinsicSize.height > 1) {
+                            Result.success(it.painter)
+                        } else {
+                            Result.failure(Exception("Image has no dimensions"))
+                        }
+                    }, onError = {
+                        it.result.throwable.printStackTrace() // Log the error
+                        imageLoadResult = Result.failure(it.result.throwable)
+                    }
+                )
+
+                // null means loading, failure means error, success means loaded
+                when(val result = imageLoadResult) {
+                    null -> CircularProgressIndicator()
+                    else -> {
+                        Image(
+                            painter = if(result.isSuccess) painter else painterResource(Res.drawable.book_error_2),
+                            contentDescription = book.title,
+                            contentScale = if(result.isSuccess) ContentScale.Crop else ContentScale.Fit,
+                            modifier = Modifier
+                                .aspectRatio(
+                                    ratio = 0.65f, // width-to-height ratio of 0.65
+                                    matchHeightConstraintsFirst = true // prioritize matching the height constraints before calculating the width based on the aspect ratio
+                                )
+                        )
+                    }
+
+                }
+            }
+
+            // Book Details
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f), // Take up remaining horizontal space
+                verticalArrangement = Arrangement.Center
+            ) {
+                // Book Title
+                Text(
+                    text = book.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                // Main Author
+                book.authors.firstOrNull()?.let { authorName ->
+                    Text(
+                        text = authorName,
+                        style = MaterialTheme.typography.bodyLarge,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+                // Book Rating with star
+                book.averageRating?.let { rating ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "${round((rating*10)/10.0)}",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = null,
+                            tint = SandYellow
+                        )
+                    }
+                }
+            }
+
+            // Right Arrow
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(36.dp)
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun BookListItemPreview() {
+    BookListItem(
+        book = sampleBook,
+        onClick = {}
+    )
+}
+
+private val sampleBook = Book(
+    id = "1",
+    title = "Sample Book Title",
+    imageUrl = "https://example.com/sample.jpg",
+    authors = listOf("Author One", "Author Two"),
+    description = "This is a sample book description.",
+    languages = listOf("en"),
+    firstPublishYear = "2020",
+    averageRating = 4.5,
+    ratingsCount = 150,
+    numPages = 320,
+    numEditions = 3
+)

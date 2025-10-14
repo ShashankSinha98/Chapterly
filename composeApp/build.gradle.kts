@@ -52,6 +52,7 @@ kotlin {
             api(libs.koin.core)
 
             implementation(libs.material.icons.extended)
+            implementation(libs.bundles.coil)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
