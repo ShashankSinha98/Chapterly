@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.lucifer.chapterly.book.domain.Book
+import com.lucifer.chapterly.book.presentation.book_list.sampleBooks
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -53,8 +54,4 @@ fun BookListPreview() {
         books = sampleBooks,
         onBookClick = {}
     )
-}
-
-val sampleBooks = List(10) { i ->
-    sampleBook.copy(id = i.toString())
 }

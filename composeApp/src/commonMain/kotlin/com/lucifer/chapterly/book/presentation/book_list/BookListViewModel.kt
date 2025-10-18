@@ -12,7 +12,9 @@ class BookListViewModel: ViewModel() {
 
     fun onAction(action: BookListAction) {
         when(action) {
-            is BookListAction.OnBookClick -> TODO()
+            is BookListAction.OnBookClick -> {
+                // Handle book click, e.g., navigate to detail screen
+            }
             is BookListAction.OnSearchQueryChange -> {
                 _state.update {
                     it.copy(searchQuery = action.query)

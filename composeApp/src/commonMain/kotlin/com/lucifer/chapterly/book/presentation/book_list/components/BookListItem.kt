@@ -37,6 +37,7 @@ import chapterly.composeapp.generated.resources.Res
 import chapterly.composeapp.generated.resources.book_error_2
 import coil3.compose.rememberAsyncImagePainter
 import com.lucifer.chapterly.book.domain.Book
+import com.lucifer.chapterly.book.presentation.book_list.sampleBook
 import com.lucifer.chapterly.core.presentation.LightBlue
 import com.lucifer.chapterly.core.presentation.SandYellow
 import org.jetbrains.compose.resources.painterResource
@@ -60,7 +61,8 @@ fun BookListItem(
                 .padding(16.dp)
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min), // Ensures the row height matches its tallest child
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
             // Book Cover Image
@@ -170,16 +172,3 @@ fun BookListItemPreview() {
     )
 }
 
-val sampleBook = Book(
-    id = "1",
-    title = "Sample Book Title",
-    imageUrl = "https://example.com/sample.jpg",
-    authors = listOf("Author One", "Author Two"),
-    description = "This is a sample book description.",
-    languages = listOf("en"),
-    firstPublishYear = "2020",
-    averageRating = 4.5,
-    ratingsCount = 150,
-    numPages = 320,
-    numEditions = 3
-)

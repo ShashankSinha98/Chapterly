@@ -35,6 +35,7 @@ kotlin {
 
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
+            implementation(libs.ktor.client.okhttp)
         }
 
         commonMain.dependencies {
@@ -53,6 +54,7 @@ kotlin {
 
             implementation(libs.material.icons.extended)
             implementation(libs.bundles.coil)
+            implementation(libs.bundles.ktor)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -60,6 +62,10 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+            implementation(libs.ktor.client.okhttp)
+        }
+        nativeMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 }
