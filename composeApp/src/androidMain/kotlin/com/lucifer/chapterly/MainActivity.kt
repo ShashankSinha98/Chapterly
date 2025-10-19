@@ -15,10 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            val engine = remember { OkHttp.create() }
-            App(
-                httpEngine = engine
-            )
+            App()
         }
     }
 }

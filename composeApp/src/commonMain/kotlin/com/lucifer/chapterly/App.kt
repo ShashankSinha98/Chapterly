@@ -31,18 +31,14 @@ import com.lucifer.chapterly.book.presentation.book_list.BookListViewModel
 import com.lucifer.chapterly.core.data.HttpClientFactory
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 @Preview
-fun App(httpEngine: HttpClientEngine) {
+fun App() {
+    val viewModel = koinViewModel<BookListViewModel>()
     BookListScreenRoot(
-        viewModel = remember { BookListViewModel(
-            DefaultBookRepository(
-                KtorRemoteBookDataSource(
-                    httpClient = HttpClientFactory.create(httpEngine)
-                )
-            )
-        ) },
+        viewModel = viewModel,
         onBookClick = {
 
         }
