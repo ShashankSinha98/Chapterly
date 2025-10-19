@@ -22,14 +22,27 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import chapterly.composeapp.generated.resources.Res
 import chapterly.composeapp.generated.resources.compose_multiplatform
+import com.lucifer.chapterly.book.data.network.KtorRemoteBookDataSource
+import com.lucifer.chapterly.book.data.network.RemoteBookDataSource
+import com.lucifer.chapterly.book.data.repository.DefaultBookRepository
+import com.lucifer.chapterly.book.domain.BookRepository
 import com.lucifer.chapterly.book.presentation.book_list.BookListScreenRoot
 import com.lucifer.chapterly.book.presentation.book_list.BookListViewModel
+import com.lucifer.chapterly.core.data.HttpClientFactory
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
 
 @Composable
 @Preview
-fun App() {
+fun App(httpEngine: HttpClientEngine) {
     BookListScreenRoot(
-        viewModel = remember { BookListViewModel() },
+        viewModel = remember { BookListViewModel(
+            DefaultBookRepository(
+                KtorRemoteBookDataSource(
+                    httpClient = HttpClientFactory.create(httpEngine)
+                )
+            )
+        ) },
         onBookClick = {
 
         }

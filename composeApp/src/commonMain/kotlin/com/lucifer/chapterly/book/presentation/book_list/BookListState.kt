@@ -4,10 +4,10 @@ import com.lucifer.chapterly.book.domain.Book
 import com.lucifer.chapterly.core.presentation.UiText
 
 data class BookListState(
-    val searchQuery: String = "",
-    val searchResults: List<Book> = sampleBooks, // also acts as all books list
+    val searchQuery: String = "Kotlin",
+    val searchResults: List<Book> = emptyList(), // also acts as all books list
     val favoriteBooks: List<Book> = emptyList(),
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val selectedTabIndex: Int = 0,
     val errorMessage: UiText? = null
 )
