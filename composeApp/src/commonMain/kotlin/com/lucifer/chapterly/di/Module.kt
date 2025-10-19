@@ -4,6 +4,7 @@ import com.lucifer.chapterly.book.data.network.KtorRemoteBookDataSource
 import com.lucifer.chapterly.book.data.network.RemoteBookDataSource
 import com.lucifer.chapterly.book.data.repository.DefaultBookRepository
 import com.lucifer.chapterly.book.domain.BookRepository
+import com.lucifer.chapterly.book.presentation.SelectedBookViewModel
 import com.lucifer.chapterly.book.presentation.book_list.BookListViewModel
 import com.lucifer.chapterly.core.data.HttpClientFactory
 import io.ktor.client.HttpClient
@@ -32,4 +33,5 @@ val sharedModule = module {
     singleOf(::DefaultBookRepository).bind<BookRepository>()
 
     viewModelOf(::BookListViewModel)
+    viewModelOf(::SelectedBookViewModel)
 }

@@ -57,6 +57,7 @@ kotlin {
             implementation(libs.material.icons.extended)
             implementation(libs.bundles.coil)
             implementation(libs.bundles.ktor)
+            implementation(libs.jetbrains.compose.navigation)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
