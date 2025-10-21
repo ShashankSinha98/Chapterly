@@ -17,6 +17,9 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.lucifer.chapterly.book.presentation.SelectedBookViewModel
+import com.lucifer.chapterly.book.presentation.book_detail.BookDetailAction
+import com.lucifer.chapterly.book.presentation.book_detail.BookDetailScreenRoot
+import com.lucifer.chapterly.book.presentation.book_detail.BookDetailViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import com.lucifer.chapterly.book.presentation.book_list.BookListScreenRoot
@@ -58,13 +61,20 @@ fun App() {
                 composable<BookGraphRoutes.BookDetail> { backStackEntry ->
                     val selectedBookViewModel = backStackEntry.sharedKoinViewModel<SelectedBookViewModel>(navController)
                     val selectedBook by selectedBookViewModel.selectedBook.collectAsState()
+                    val viewModel = koinViewModel<BookDetailViewModel>()
 
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("Book Detail Screen! The Book is $selectedBook")
+                    LaunchedEffect(selectedBook) {
+                        selectedBook?.let {
+                            viewModel.onAction(BookDetailAction.OnSelectedBookChange(it))
+                        }
                     }
+
+                    BookDetailScreenRoot(
+                        viewModel = viewModel,
+                        onBackClick = {
+                            navController.navigateUp()
+                        }
+                    )
                 }
             }
         }
