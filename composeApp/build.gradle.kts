@@ -58,6 +58,7 @@ kotlin {
             implementation(libs.bundles.coil)
             implementation(libs.bundles.ktor)
             implementation(libs.jetbrains.compose.navigation)
+            implementation("co.touchlab:kermit:2.0.2")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
