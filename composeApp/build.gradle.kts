@@ -1,4 +1,6 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -8,6 +10,8 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 kotlin {
@@ -28,6 +32,10 @@ kotlin {
     }
     
     jvm()
+
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
     
     sourceSets {
         androidMain.dependencies {
@@ -58,7 +66,9 @@ kotlin {
             implementation(libs.bundles.coil)
             implementation(libs.bundles.ktor)
             implementation(libs.jetbrains.compose.navigation)
+            implementation(libs.sqlite.bundled)
             implementation("co.touchlab:kermit:2.0.2")
+            implementation(libs.androidx.room.runtime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -103,6 +113,10 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+    add("kspJvm", libs.androidx.room.compiler)
 }
 
 compose.desktop {

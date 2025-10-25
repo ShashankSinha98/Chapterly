@@ -1,5 +1,8 @@
 package com.lucifer.chapterly.di
 
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.lucifer.chapterly.book.data.database.DatabaseFactory
+import com.lucifer.chapterly.book.data.database.FavoriteBookDatabase
 import com.lucifer.chapterly.book.data.network.KtorRemoteBookDataSource
 import com.lucifer.chapterly.book.data.network.RemoteBookDataSource
 import com.lucifer.chapterly.book.data.repository.DefaultBookRepository
@@ -32,6 +35,14 @@ val sharedModule = module {
     singleOf(::KtorRemoteBookDataSource).bind<RemoteBookDataSource>()
 
     singleOf(::DefaultBookRepository).bind<BookRepository>()
+
+    single {
+        get<DatabaseFactory>().create()
+            .setDriver(BundledSQLiteDriver())
+            .build() // Returns FavoriteBookDatabase
+    }
+
+    single { get<FavoriteBookDatabase>().favoriteBookDao }
 
     viewModelOf(::BookListViewModel)
     viewModelOf(::SelectedBookViewModel)
