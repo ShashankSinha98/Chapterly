@@ -1,5 +1,7 @@
 package com.lucifer.chapterly.app
 
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -38,7 +40,13 @@ fun App() {
             navigation<Routes.BookGraph>(
                 startDestination = BookGraphRoutes.BookList
             ) {
-                composable<BookGraphRoutes.BookList> { backStackEntry ->
+                composable<BookGraphRoutes.BookList>(
+                    exitTransition = { slideOutHorizontally() },
+                    popEnterTransition = {
+                        slideInHorizontally()
+                    }
+                ) { backStackEntry ->
+
                     val viewModel = koinViewModel<BookListViewModel>()
                     val selectedBookViewModel = backStackEntry.sharedKoinViewModel<SelectedBookViewModel>(navController)
 
@@ -58,7 +66,15 @@ fun App() {
                     )
                 }
 
-                composable<BookGraphRoutes.BookDetail> { backStackEntry ->
+                composable<BookGraphRoutes.BookDetail>(
+                    enterTransition = { slideInHorizontally { initialOffset ->
+                        initialOffset
+                    } },
+                    popExitTransition = { slideOutHorizontally { initialOffset ->
+                        initialOffset
+                    } }
+                ) { backStackEntry ->
+
                     val selectedBookViewModel = backStackEntry.sharedKoinViewModel<SelectedBookViewModel>(navController)
                     val selectedBook by selectedBookViewModel.selectedBook.collectAsState()
                     val viewModel = koinViewModel<BookDetailViewModel>()
